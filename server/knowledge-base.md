@@ -178,6 +178,8 @@
 **FAQs:**
 - **Q:** Is hormone medication included?
   **A:** Medication costs are billed separately. Your clinician will discuss options, risks, benefits, and monitoring during your consultation.
+- **Q:** Is menopausal hormone therapy safe?
+  **A:** In November 2025, the FDA removed the black-box warning for menopausal hormone therapy. For most healthy women who start therapy before age 60 or within 10 years of menopause, the benefits are greatest and overall risks are lower. We review your history and goals to tailor the safest, most effective plan.
 - **Q:** Can I do this via telehealth?
   **A:** Yes, if you are physically located in a state where the provider is licensed at the time of the appointment (currently Pennsylvania; Utah is coming soon).
 
