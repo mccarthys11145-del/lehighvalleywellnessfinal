@@ -1,0 +1,720 @@
+{
+  "kb_version": "1.0",
+  "generated_at_utc": "2026-01-05T06:24:04.303954+00:00",
+  "practice": {
+    "name": "Lehigh Valley Wellness",
+    "provider": {
+      "name": "Stephen McCarthy",
+      "credentials": "PA-C",
+      "positioning": "Evidence-based care focused on significant medical weight loss, metabolic health, hormone optimization, and selected wellness programs.",
+      "notes_for_ai": [
+        "Do not present information as medical advice. Encourage booking a consultation for individualized guidance.",
+        "Do not establish a provider-patient relationship through chat."
+      ]
+    },
+    "service_states": {
+      "active": [
+        "PA"
+      ],
+      "coming_soon": [
+        "UT"
+      ],
+      "telehealth_location_rule": "Patient must be physically located in a state where the provider is licensed at the time of the telehealth visit."
+    },
+    "contact": {
+      "phone_display": "(484) 357-1916",
+      "phone_e164": "+14843571916",
+      "email": "info@lehighvalleywellness.com",
+      "booking_url": "/contact"
+    }
+  },
+  "global_disclosures": [
+    "Information provided by chat is for general informational purposes only and is not medical advice.",
+    "Do not submit sensitive personal health information (PHI) through chat or website forms.",
+    "If you think you have a medical emergency, call 911 or go to the nearest emergency room.",
+    "Controlled substances are not prescribed at this time.",
+    "Labs and medications are typically billed separately from membership fees unless explicitly stated."
+  ],
+  "policies": {
+    "deposit_policy": {
+      "enabled": true,
+      "purpose": "Reduce no-shows and reserve provider time.",
+      "deposit_amount_usd": 50,
+      "applies_to": [
+        "initial_consultations",
+        "program_onboarding_visits"
+      ],
+      "how_it_works": [
+        "A $50 deposit is collected at scheduling to hold your appointment.",
+        "The deposit is applied to your onboarding/initial visit fee or first month membership if you enroll.",
+        "If you cancel or reschedule with at least 24 hours notice, the deposit can be transferred to a new appointment time.",
+        "If you cancel with less than 24 hours notice or do not show, the deposit is forfeited."
+      ],
+      "exceptions": [
+        "One courtesy reschedule may be offered at the practice's discretion for unexpected circumstances."
+      ],
+      "ai_guidance": "If a user disputes a fee or asks for an exception, route them to the practice to review."
+    },
+    "membership_billing": {
+      "billing_frequency": "monthly",
+      "auto_renew": true,
+      "minimum_term_default_months": 3,
+      "cancellation": [
+        "Members can request cancellation any time unless a minimum term applies.",
+        "Cancellation takes effect at the end of the current billing period (no partial-month refunds)."
+      ],
+      "refunds": [
+        "Membership fees are generally non-refundable once the month begins, because provider time and support are reserved."
+      ]
+    },
+    "no_show_policy": {
+      "initial_visit": "Deposit is forfeited if no-show or late cancellation (<24 hours).",
+      "follow_up_visits": "May be charged a missed-visit fee or require a deposit for rescheduling."
+    },
+    "privacy_and_communication": {
+      "chat_scope": [
+        "Chat can help with pricing, what programs include, how to get started, and general process questions.",
+        "Chat cannot provide individualized treatment plans or diagnose conditions."
+      ],
+      "hipaa_note": "Chat and website forms are not intended for exchanging sensitive medical details."
+    }
+  },
+  "programs": [
+    {
+      "id": "weight_loss_metabolic",
+      "name": "Significant Medical Weight Loss (Metabolic Medicine)",
+      "category": "WEIGHT_LOSS",
+      "short_description": "Clinician-guided weight loss program focused on meaningful, sustained fat loss and metabolic health using lifestyle strategy and evidence-based medications when appropriate.",
+      "who_its_for": [
+        "Adults who want significant, sustainable weight loss",
+        "People struggling with hunger, cravings, plateauing, or metabolic resistance",
+        "Patients interested in GLP-1-based options (if clinically appropriate)"
+      ],
+      "who_it_may_not_be_for": [
+        "People seeking a one-time prescription without follow-up",
+        "Anyone who needs urgent/emergency care"
+      ],
+      "onboarding": {
+        "price_usd": 175,
+        "duration_minutes": 45,
+        "includes": [
+          "Medical history review and goal setting",
+          "Baseline plan and discussion of options",
+          "Review of expected labs and monitoring"
+        ]
+      },
+      "membership_terms": {
+        "billing": "monthly",
+        "minimum_term_months": 3,
+        "labs_included": false,
+        "medications_included": false
+      },
+      "tiers": [
+        {
+          "id": "metabolic_reset_essential",
+          "name": "Metabolic Reset (Essential)",
+          "price_per_month_usd": 149,
+          "visit_schedule": [
+            {
+              "frequency": "monthly",
+              "type": "follow_up_visit",
+              "duration_minutes": 20
+            }
+          ],
+          "includes": [
+            "Personalized nutrition/activity plan",
+            "Medication review and non-controlled options when appropriate",
+            "Secure messaging (response target: within 48 business hours)"
+          ],
+          "not_included": [
+            "Labs",
+            "Medication costs",
+            "In-person vitals/labs (if needed)"
+          ]
+        },
+        {
+          "id": "metabolic_reset_comprehensive",
+          "name": "Metabolic Reset (Comprehensive)",
+          "price_per_month_usd": 199,
+          "visit_schedule": [
+            {
+              "frequency": "monthly",
+              "type": "follow_up_visit",
+              "duration_minutes": 30
+            }
+          ],
+          "includes": [
+            "More time for troubleshooting plateaus and side effects",
+            "Lab review as clinically indicated",
+            "Secure messaging (response target: within 48 business hours)"
+          ],
+          "not_included": [
+            "Labs",
+            "Medication costs"
+          ]
+        },
+        {
+          "id": "metabolic_reset_intensive",
+          "name": "Metabolic Reset (Intensive)",
+          "price_per_month_usd": 249,
+          "visit_schedule": [
+            {
+              "frequency": "monthly",
+              "type": "follow_up_visit",
+              "duration_minutes": 30
+            },
+            {
+              "frequency": "monthly",
+              "type": "check_in",
+              "duration_minutes": 10
+            }
+          ],
+          "includes": [
+            "Extra check-in for adherence, adjustments, and momentum",
+            "Priority messaging (response target: within 48 business hours)"
+          ],
+          "not_included": [
+            "Labs",
+            "Medication costs"
+          ]
+        }
+      ],
+      "common_medication_discussion_topics": [
+        "GLP-1 medications (e.g., semaglutide) and GLP-1/GIP medications (e.g., tirzepatide) if clinically appropriate",
+        "Evidence-based non-controlled oral options when appropriate"
+      ],
+      "frequently_asked_questions": [
+        {
+          "q": "Is medication included in the membership?",
+          "a": "No. Membership covers your visits, plan, and support. Labs and medications are billed separately unless explicitly stated."
+        },
+        {
+          "q": "Do you offer semaglutide or tirzepatide?",
+          "a": "If clinically appropriate, these options may be discussed. Final selection depends on your medical history, goals, and risk profile."
+        }
+      ]
+    },
+    {
+      "id": "women_menopause_hrt",
+      "name": "Women’s Perimenopause & Menopause Hormone Therapy",
+      "category": "MENOPAUSE_HRT",
+      "short_description": "Evidence-based menopause/perimenopause support focused on symptom relief, quality of life, and safe monitoring. Therapy is individualized after evaluation and lab review as appropriate.",
+      "who_its_for": [
+        "Women experiencing perimenopause or menopause symptoms",
+        "Patients seeking education, symptom tracking, and structured follow-up"
+      ],
+      "who_it_may_not_be_for": [
+        "Anyone needing urgent/emergency evaluation"
+      ],
+      "onboarding": {
+        "price_usd": 200,
+        "duration_minutes": 45,
+        "includes": [
+          "Symptom review and risk screening",
+          "Discussion of options and monitoring plan",
+          "Lab planning when clinically indicated"
+        ]
+      },
+      "membership_terms": {
+        "billing": "monthly",
+        "minimum_term_months": 0,
+        "labs_included": false,
+        "medications_included": false
+      },
+      "tiers": [
+        {
+          "id": "menopause_relief_foundation",
+          "name": "Menopause Relief (Foundation)",
+          "price_per_month_usd": 159,
+          "visit_schedule": [
+            {
+              "frequency": "monthly",
+              "type": "follow_up_visit",
+              "duration_minutes": 30
+            }
+          ],
+          "includes": [
+            "Symptom-guided plan + education + monitoring",
+            "Secure messaging (response target: within 48 business hours)"
+          ],
+          "not_included": [
+            "Labs",
+            "Medication costs"
+          ]
+        },
+        {
+          "id": "menopause_relief_optimize",
+          "name": "Menopause Relief (Optimize)",
+          "price_per_month_usd": 189,
+          "visit_schedule": [
+            {
+              "frequency": "monthly",
+              "type": "follow_up_visit",
+              "duration_minutes": 30
+            },
+            {
+              "frequency": "monthly",
+              "type": "check_in",
+              "duration_minutes": 10
+            }
+          ],
+          "includes": [
+            "Extra check-in for adjustments and side effect management",
+            "Priority messaging (response target: within 48 business hours)"
+          ],
+          "not_included": [
+            "Labs",
+            "Medication costs"
+          ]
+        },
+        {
+          "id": "menopause_relief_comprehensive",
+          "name": "Menopause Relief (Comprehensive)",
+          "price_per_month_usd": 229,
+          "visit_schedule": [
+            {
+              "frequency": "monthly",
+              "type": "follow_up_visit",
+              "duration_minutes": 45
+            },
+            {
+              "frequency": "monthly",
+              "type": "check_in",
+              "duration_minutes": 10
+            }
+          ],
+          "includes": [
+            "Extended visit time for complex cases",
+            "Priority messaging (response target: within 48 business hours)"
+          ],
+          "not_included": [
+            "Labs",
+            "Medication costs"
+          ]
+        }
+      ],
+      "frequently_asked_questions": [
+        {
+          "q": "Is hormone medication included?",
+          "a": "Medication costs are billed separately. Your clinician will discuss options, risks, benefits, and monitoring during your consultation."
+        },
+        {
+          "q": "Can I do this via telehealth?",
+          "a": "Yes, if you are physically located in a state where the provider is licensed at the time of the appointment (currently Pennsylvania; Utah is coming soon)."
+        }
+      ]
+    },
+    {
+      "id": "midlife_combined_program",
+      "name": "Midlife Metabolic + Menopause Combined Program",
+      "category": "COMBINED",
+      "short_description": "A combined membership for patients who want both significant weight loss support and menopause/perimenopause management with coordinated follow-up.",
+      "onboarding": {
+        "price_usd": 275,
+        "duration_minutes": 60,
+        "includes": [
+          "Combined intake and coordinated plan across metabolic and menopause goals",
+          "Lab planning and prioritized next steps"
+        ]
+      },
+      "membership_terms": {
+        "billing": "monthly",
+        "minimum_term_months": 3,
+        "labs_included": false,
+        "medications_included": false
+      },
+      "tiers": [
+        {
+          "id": "combined_single_tier",
+          "name": "Combined Program Membership",
+          "price_per_month_usd": 329,
+          "visit_schedule": [
+            {
+              "frequency": "monthly",
+              "type": "follow_up_visit",
+              "duration_minutes": 45
+            },
+            {
+              "frequency": "monthly",
+              "type": "check_in",
+              "duration_minutes": 10
+            }
+          ],
+          "includes": [
+            "Coordinated management across both programs",
+            "Priority messaging (response target: within 48 business hours)"
+          ],
+          "not_included": [
+            "Labs",
+            "Medication costs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "peptide_therapy_recovery",
+      "name": "Peptide Therapy (Recovery, Performance, Longevity Support)",
+      "category": "PEPTIDES",
+      "short_description": "Clinician-guided peptide therapy for recovery and wellness goals when appropriate. Peptide selection and dosing are individualized after evaluation.",
+      "onboarding": {
+        "price_usd": 150,
+        "duration_minutes": 45,
+        "includes": [
+          "Goal review and safety screening",
+          "Discussion of peptide options and expectations",
+          "Plan for follow-up and monitoring"
+        ]
+      },
+      "membership_terms": {
+        "billing": "monthly",
+        "minimum_term_months": 3,
+        "labs_included": false,
+        "medications_included": false
+      },
+      "tiers": [
+        {
+          "id": "peptide_support_standard",
+          "name": "Peptide Support (Standard)",
+          "price_per_month_usd": 149,
+          "visit_schedule": [
+            {
+              "frequency": "monthly",
+              "type": "follow_up_visit",
+              "duration_minutes": 20
+            }
+          ],
+          "includes": [
+            "Protocol management and adjustments",
+            "Secure messaging (response target: within 48 business hours)"
+          ],
+          "not_included": [
+            "Medication costs",
+            "Labs"
+          ]
+        },
+        {
+          "id": "peptide_support_plus",
+          "name": "Peptide Support (Plus)",
+          "price_per_month_usd": 199,
+          "visit_schedule": [
+            {
+              "frequency": "monthly",
+              "type": "follow_up_visit",
+              "duration_minutes": 30
+            }
+          ],
+          "includes": [
+            "More time for protocol refinement and troubleshooting",
+            "Secure messaging (response target: within 48 business hours)"
+          ],
+          "not_included": [
+            "Medication costs",
+            "Labs"
+          ]
+        }
+      ],
+      "example_peptides_discussed": [
+        "Sermorelin (growth hormone secretagogue)",
+        "NAD+ (wellness/energy support)",
+        "PT-141 (sexual wellness, when appropriate)"
+      ],
+      "faq": [
+        {
+          "q": "Are peptides FDA-approved?",
+          "a": "Some peptides and related therapies are prescribed as compounded medications. Your clinician will discuss what is appropriate, the evidence, and safety considerations during your visit."
+        }
+      ]
+    },
+    {
+      "id": "mens_sexual_health",
+      "name": "Men’s Sexual Health (ED & Performance)",
+      "category": "SEXUAL_HEALTH",
+      "short_description": "Evaluation and management of erectile dysfunction and sexual performance concerns with a medical approach, labs when indicated, and prescription options when appropriate.",
+      "onboarding": {
+        "price_usd": 149,
+        "duration_minutes": 45,
+        "includes": [
+          "Medical history and risk screening (including cardiovascular risk discussion)",
+          "Discussion of medication and lifestyle options",
+          "Lab planning when clinically indicated"
+        ]
+      },
+      "membership_terms": {
+        "billing": "monthly",
+        "minimum_term_months": 3,
+        "labs_included": false,
+        "medications_included": false
+      },
+      "tiers": [
+        {
+          "id": "sexual_health_standard",
+          "name": "Sexual Health (Standard)",
+          "price_per_month_usd": 99,
+          "visit_schedule": [
+            {
+              "frequency": "every_3_months",
+              "type": "follow_up_visit",
+              "duration_minutes": 20
+            }
+          ],
+          "includes": [
+            "Medication management when appropriate",
+            "Secure messaging (response target: within 48 business hours)"
+          ],
+          "not_included": [
+            "Medication costs",
+            "Labs"
+          ]
+        },
+        {
+          "id": "sexual_health_plus",
+          "name": "Sexual Health (Plus)",
+          "price_per_month_usd": 129,
+          "visit_schedule": [
+            {
+              "frequency": "every_2_months",
+              "type": "follow_up_visit",
+              "duration_minutes": 20
+            }
+          ],
+          "includes": [
+            "More frequent follow-up for optimization and side-effect management",
+            "Secure messaging (response target: within 48 business hours)"
+          ],
+          "not_included": [
+            "Medication costs",
+            "Labs"
+          ]
+        }
+      ],
+      "medications_may_include": [
+        "Tadalafil (Cialis) or sildenafil (Viagra) type medications when appropriate",
+        "PT-141 may be discussed for selected cases"
+      ],
+      "faq": [
+        {
+          "q": "Can you prescribe ED meds via telehealth?",
+          "a": "If clinically appropriate and permitted under applicable regulations, ED medications can often be prescribed with telehealth. Your clinician will confirm eligibility during the visit."
+        }
+      ]
+    },
+    {
+      "id": "hair_restoration",
+      "name": "Hair Restoration (Men’s Hair Loss)",
+      "category": "HAIR_RESTORATION",
+      "short_description": "Medical approach to male pattern hair loss using evidence-based options (e.g., oral/topical treatments) with monitoring and follow-up.",
+      "onboarding": {
+        "price_usd": 99,
+        "duration_minutes": 30,
+        "includes": [
+          "Hair loss history review and goal setting",
+          "Discussion of evidence-based options and expectations",
+          "Plan for follow-up and photos for tracking"
+        ]
+      },
+      "membership_terms": {
+        "billing": "monthly",
+        "minimum_term_months": 3,
+        "labs_included": false,
+        "medications_included": false
+      },
+      "tiers": [
+        {
+          "id": "hair_standard",
+          "name": "Hair Restoration (Standard)",
+          "price_per_month_usd": 69,
+          "visit_schedule": [
+            {
+              "frequency": "every_3_months",
+              "type": "follow_up_visit",
+              "duration_minutes": 15
+            }
+          ],
+          "includes": [
+            "Treatment optimization and monitoring",
+            "Secure messaging (response target: within 48 business hours)"
+          ],
+          "not_included": [
+            "Medication costs"
+          ]
+        },
+        {
+          "id": "hair_plus",
+          "name": "Hair Restoration (Plus)",
+          "price_per_month_usd": 99,
+          "visit_schedule": [
+            {
+              "frequency": "every_2_months",
+              "type": "follow_up_visit",
+              "duration_minutes": 15
+            }
+          ],
+          "includes": [
+            "More frequent check-ins for faster optimization",
+            "Secure messaging (response target: within 48 business hours)"
+          ],
+          "not_included": [
+            "Medication costs"
+          ]
+        }
+      ],
+      "common_medications_discussed": [
+        "Finasteride or dutasteride (if appropriate)",
+        "Minoxidil (topical or oral options may be discussed)"
+      ],
+      "faq": [
+        {
+          "q": "How long until I see results?",
+          "a": "Hair restoration typically requires consistent treatment for several months before visible improvement. Your clinician will set expectations based on your case."
+        }
+      ]
+    }
+  ],
+  "pharmacy_reference": {
+    "purpose": "Reference data for patient questions about typical cash pricing and shipping when using partner pharmacies. Prices may change.",
+    "farmaKeio": {
+      "name": "FarmaKeio Pharmacy Network",
+      "notes_for_ai": [
+        "If asked about medication costs, emphasize that the pharmacy bills separately and prices vary by dose/quantity.",
+        "Provide ranges or examples, and encourage confirming exact pricing after the prescription is created."
+      ],
+      "terms": {
+        "shipping_included": true,
+        "dispensing_fee_usd": 25,
+        "pricing_formula": "(catalog_price × quantity) + $25 dispensing fee",
+        "standard_processing_time_business_days": "3-5",
+        "refrigerated_shipping": "Complimentary overnight delivery for refrigerated orders",
+        "stat_upgrade_fee_usd": 45
+      },
+      "example_weight_management_prices_catalog": [
+        {
+          "medication": "Pyridoxine HCl / Semaglutide Injection",
+          "strength": "(25mg/2.5mg)/mL",
+          "size": "1mL vial",
+          "catalog_price_usd": 64,
+          "estimated_total_with_dispensing_fee_usd": 89
+        },
+        {
+          "medication": "Pyridoxine HCl / Semaglutide Injection",
+          "strength": "(25mg/2.5mg)/mL",
+          "size": "2mL vial",
+          "catalog_price_usd": 130,
+          "estimated_total_with_dispensing_fee_usd": 155
+        },
+        {
+          "medication": "Pyridoxine HCl / Tirzepatide Injection",
+          "strength": "(25mg/18mg)/mL",
+          "size": "1mL vial",
+          "catalog_price_usd": 145,
+          "estimated_total_with_dispensing_fee_usd": 170
+        }
+      ],
+      "example_peptide_prices_catalog": [
+        {
+          "medication": "PT-141 (Bremelanotide Acetate) Injection",
+          "strength": "10mg/mL",
+          "size": "2mL vial",
+          "catalog_price_usd": 85,
+          "estimated_total_with_dispensing_fee_usd": 110
+        },
+        {
+          "medication": "Sermorelin Acetate Injection",
+          "strength": "1mg/mL",
+          "size": "6mL vial",
+          "catalog_price_usd": 48,
+          "estimated_total_with_dispensing_fee_usd": 73
+        },
+        {
+          "medication": "NAD+ Injection",
+          "strength": "200mg/mL",
+          "size": "10mL vial",
+          "catalog_price_usd": 100,
+          "estimated_total_with_dispensing_fee_usd": 125
+        }
+      ],
+      "source_citations": [
+        "FarmaKeio terms and dispensing fee + processing: 【1114:6†FarmaKeio Price List.pdf†L24-L45】",
+        "FarmaKeio injection examples (NAD+, PT-141, semaglutide, tirzepatide, sermorelin): 【1114:4†FarmaKeio Price List.pdf†L8-L22】"
+      ]
+    },
+    "empower_or_t3_catalog": {
+      "name": "Patient-Specific Bill Clinic Catalog (T3) – Updated Feb 12, 2024",
+      "notes_for_ai": [
+        "This catalog contains per-unit pricing examples that may be used as rough references.",
+        "Final patient pricing depends on pharmacy policies, prescription quantity, and dispensing/shipping fees."
+      ],
+      "example_hair_and_ed_prices_catalog": [
+        {
+          "medication": "Biotin / Finasteride / Minoxidil Capsule",
+          "strength": "5/2.5/0.25mg",
+          "unit": "per capsule",
+          "catalog_price_usd": 1.32
+        },
+        {
+          "medication": "Dutasteride (Generic) Capsule",
+          "strength": "0.5mg",
+          "unit": "per capsule",
+          "catalog_price_usd": 0.45
+        },
+        {
+          "medication": "Tadalafil (Generic) Tablet",
+          "strength": "5mg",
+          "unit": "per tablet",
+          "catalog_price_usd": 1.85
+        }
+      ],
+      "source_citations": [
+        "T3 catalog hair-loss combo and dutasteride examples: 【1114:1†Patient-Specific-Bill-Clinic-T3-Catalog 240212.pdf†L30-L60】",
+        "T3 catalog tadalafil example: 【1114:11†Patient-Specific-Bill-Clinic-T3-Catalog 240212.pdf†L5-L12】"
+      ]
+    }
+  },
+  "handoff_rules": {
+    "always_escalate_to_human_if_user_mentions": [
+      "chest pain",
+      "shortness of breath",
+      "stroke",
+      "severe allergic reaction",
+      "suicidal",
+      "self-harm",
+      "overdose",
+      "pregnant",
+      "severe abdominal pain",
+      "vision loss"
+    ],
+    "escalate_for_policy_exceptions": [
+      "refund request",
+      "deposit dispute",
+      "requests for controlled substances",
+      "requests to send sensitive medical records through chat"
+    ],
+    "recommended_response_for_emergency": "If you may be experiencing a medical emergency, call 911 or go to the nearest emergency room."
+  },
+  "training_faq": [
+    {
+      "intent": "pricing_overview",
+      "q": "How much do your programs cost?",
+      "a": "Lehigh Valley Wellness offers monthly memberships. Pricing depends on the program and level of support. Most programs also have an onboarding visit fee. Labs and medications are typically billed separately."
+    },
+    {
+      "intent": "insurance",
+      "q": "Do you take insurance?",
+      "a": "These programs are cash-pay memberships. You may be able to use insurance for certain labs or medications depending on your coverage, but membership fees are paid directly."
+    },
+    {
+      "intent": "telehealth_states",
+      "q": "Can I do telehealth if I live in another state?",
+      "a": "Telehealth is available when you are physically located in a state where the provider is licensed at the time of your visit. Currently Pennsylvania is available; Utah is coming soon."
+    },
+    {
+      "intent": "controlled_substances",
+      "q": "Do you prescribe controlled substances?",
+      "a": "Controlled substances are not prescribed at this time."
+    },
+    {
+      "intent": "deposit",
+      "q": "Do I need a deposit to book?",
+      "a": "Yes. A $50 deposit holds your initial appointment and is applied to your visit fee or your first month if you enroll. It is forfeited for late cancellations (<24 hours) or no-shows."
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+ALTER TABLE `leads` MODIFY COLUMN `phone` varchar(20) NOT NULL;

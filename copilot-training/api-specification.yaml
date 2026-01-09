@@ -1,0 +1,710 @@
+openapi: 3.1.0
+info:
+  title: Lehigh Valley Wellness API
+  description: |
+    REST API specification for the Lehigh Valley Wellness website CRM system.
+    
+    This API uses tRPC under the hood, which means all endpoints are accessed via POST requests
+    to `/api/trpc/{procedure}` with JSON payloads. The specification below documents the
+    logical endpoints and their request/response schemas.
+    
+    ## Authentication
+    - Public endpoints: No authentication required
+    - Staff endpoints: Requires staff or admin role
+    - Admin endpoints: Requires admin role only
+    
+    ## Rate Limiting
+    - Contact form submissions are rate-limited to 3 per minute per IP and per email address
+    - Honeypot field (`website`) must be empty for valid submissions
+    
+  version: 1.0.0
+  contact:
+    name: Lehigh Valley Wellness
+    url: https://lehighvalleywellness.com
+    email: info@lehighvalleywellness.com
+
+servers:
+  - url: https://your-domain.manus.space/api/trpc
+    description: Production server
+
+tags:
+  - name: Authentication
+    description: User authentication and session management
+  - name: Leads (Public)
+    description: Public endpoints for contact form submissions
+  - name: Leads (Admin)
+    description: Protected endpoints for CRM lead management
+
+paths:
+  /auth.me:
+    post:
+      tags:
+        - Authentication
+      summary: Get current user
+      description: Returns the currently authenticated user's information, or null if not logged in.
+      operationId: authMe
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+      responses:
+        '200':
+          description: Current user information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        oneOf:
+                          - $ref: '#/components/schemas/User'
+                          - type: 'null'
+
+  /auth.logout:
+    post:
+      tags:
+        - Authentication
+      summary: Logout current user
+      description: Clears the session cookie and logs out the current user.
+      operationId: authLogout
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          success:
+                            type: boolean
+                            example: true
+
+  /leads.create:
+    post:
+      tags:
+        - Leads (Public)
+      summary: Create a new lead
+      description: |
+        Submits a new lead from the contact form. This endpoint is public but protected by:
+        - Rate limiting (3 submissions per minute per IP/email)
+        - Honeypot field validation (website field must be empty)
+        - Input sanitization (HTML tags removed, length limits enforced)
+        
+        **Important:** Do not collect PHI (Protected Health Information) through this endpoint.
+      operationId: leadsCreate
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - fullName
+                - email
+                - state
+                - interest
+                - preferredContactMethod
+              properties:
+                fullName:
+                  type: string
+                  minLength: 1
+                  maxLength: 200
+                  description: Full name of the prospective patient
+                  example: "Jane Smith"
+                email:
+                  type: string
+                  format: email
+                  maxLength: 320
+                  description: Email address (required)
+                  example: "jane.smith@example.com"
+                phone:
+                  type: string
+                  maxLength: 20
+                  description: Phone number (required by form, optional in API)
+                  example: "(484) 555-1234"
+                state:
+                  type: string
+                  enum: [PA, UT, Other]
+                  description: State of residence
+                  example: "PA"
+                interest:
+                  type: string
+                  enum: [WEIGHT_LOSS, MENOPAUSE_HRT, GENERAL, OTHER]
+                  description: Primary area of interest
+                  example: "WEIGHT_LOSS"
+                preferredContactMethod:
+                  type: string
+                  enum: [PHONE, EMAIL, TEXT]
+                  description: How the patient prefers to be contacted
+                  example: "EMAIL"
+                preferredContactTime:
+                  type: string
+                  maxLength: 200
+                  description: Best time to contact (optional)
+                  example: "Weekday mornings"
+                message:
+                  type: string
+                  maxLength: 2000
+                  description: Additional message (optional, no medical details)
+                  example: "I'm interested in learning more about your weight loss program."
+                source:
+                  type: string
+                  maxLength: 100
+                  default: "website_contact_form"
+                  description: Source of the lead
+                  example: "website_contact_form"
+                website:
+                  type: string
+                  maxLength: 0
+                  description: |
+                    **Honeypot field - MUST be empty!**
+                    If this field contains any value, the submission will be silently rejected as spam.
+                  example: ""
+      responses:
+        '200':
+          description: Lead created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          success:
+                            type: boolean
+                            example: true
+                          lead:
+                            $ref: '#/components/schemas/Lead'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRPCError'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRPCError'
+
+  /admin.listLeads:
+    post:
+      tags:
+        - Leads (Admin)
+      summary: List leads with search and filters
+      description: |
+        Returns a list of leads with optional search, filtering, and sorting.
+        Requires staff or admin role.
+      operationId: adminListLeads
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                search:
+                  type: string
+                  description: Search term (matches name, email, phone)
+                  example: "smith"
+                status:
+                  type: string
+                  enum: [NEW, CONTACTED, SCHEDULED, CLOSED]
+                  description: Filter by lead status
+                  example: "NEW"
+                interest:
+                  type: string
+                  enum: [WEIGHT_LOSS, MENOPAUSE_HRT, GENERAL, OTHER]
+                  description: Filter by interest area
+                  example: "WEIGHT_LOSS"
+                state:
+                  type: string
+                  enum: [PA, UT, Other]
+                  description: Filter by state
+                  example: "PA"
+                sortBy:
+                  type: string
+                  enum: [createdAt, updatedAt, fullName, email]
+                  default: createdAt
+                  description: Field to sort by
+                  example: "createdAt"
+                sortOrder:
+                  type: string
+                  enum: [asc, desc]
+                  default: desc
+                  description: Sort direction
+                  example: "desc"
+      responses:
+        '200':
+          description: List of leads
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Lead'
+        '401':
+          description: Unauthorized - not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRPCError'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRPCError'
+
+  /admin.getLead:
+    post:
+      tags:
+        - Leads (Admin)
+      summary: Get a single lead by ID
+      description: |
+        Returns detailed information for a specific lead.
+        Requires staff or admin role.
+      operationId: adminGetLead
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  description: Lead UUID
+                  example: "550e8400-e29b-41d4-a716-446655440000"
+      responses:
+        '200':
+          description: Lead details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Lead'
+        '404':
+          description: Lead not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRPCError'
+
+  /admin.updateLead:
+    post:
+      tags:
+        - Leads (Admin)
+      summary: Update lead status and notes
+      description: |
+        Updates a lead's status and/or internal notes.
+        Requires staff or admin role.
+        Automatically updates the `updatedAt` timestamp.
+      operationId: adminUpdateLead
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  description: Lead UUID
+                  example: "550e8400-e29b-41d4-a716-446655440000"
+                status:
+                  type: string
+                  enum: [NEW, CONTACTED, SCHEDULED, CLOSED]
+                  description: New status for the lead
+                  example: "CONTACTED"
+                internalNotes:
+                  type: string
+                  nullable: true
+                  description: Internal notes (staff-only, not visible to patient)
+                  example: "Called on 12/20, left voicemail. Will follow up next week."
+      responses:
+        '200':
+          description: Updated lead
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Lead'
+        '404':
+          description: Lead not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRPCError'
+
+  /admin.markAsContacted:
+    post:
+      tags:
+        - Leads (Admin)
+      summary: Quick action - Mark lead as contacted
+      description: |
+        Convenience endpoint to quickly update a lead's status to "CONTACTED".
+        Requires staff or admin role.
+      operationId: adminMarkAsContacted
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  description: Lead UUID
+                  example: "550e8400-e29b-41d4-a716-446655440000"
+      responses:
+        '200':
+          description: Updated lead
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Lead'
+        '404':
+          description: Lead not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRPCError'
+
+  /admin.exportLeads:
+    post:
+      tags:
+        - Leads (Admin)
+      summary: Export leads as CSV
+      description: |
+        Exports filtered leads as CSV data.
+        **Requires admin role only** (staff cannot export).
+        Internal notes are excluded from the export for privacy.
+      operationId: adminExportLeads
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                search:
+                  type: string
+                  description: Search term to filter export
+                status:
+                  type: string
+                  enum: [NEW, CONTACTED, SCHEDULED, CLOSED]
+                  description: Filter by status
+                interest:
+                  type: string
+                  enum: [WEIGHT_LOSS, MENOPAUSE_HRT, GENERAL, OTHER]
+                  description: Filter by interest
+                state:
+                  type: string
+                  enum: [PA, UT, Other]
+                  description: Filter by state
+                sortBy:
+                  type: string
+                  enum: [createdAt, updatedAt, fullName, email]
+                  description: Sort field
+                sortOrder:
+                  type: string
+                  enum: [asc, desc]
+                  description: Sort direction
+      responses:
+        '200':
+          description: CSV export data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          csv:
+                            type: string
+                            description: CSV content as string
+                            example: '"ID","Full Name","Email"...'
+                          count:
+                            type: integer
+                            description: Number of leads exported
+                            example: 25
+                          exportedAt:
+                            type: string
+                            format: date-time
+                            description: Export timestamp
+                            example: "2024-12-22T15:30:00.000Z"
+        '403':
+          description: Forbidden - admin role required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TRPCError'
+
+  /admin.getCurrentUser:
+    post:
+      tags:
+        - Leads (Admin)
+      summary: Get current admin user info
+      description: |
+        Returns information about the currently logged-in admin/staff user.
+        Requires staff or admin role.
+      operationId: adminGetCurrentUser
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+      responses:
+        '200':
+          description: Current user info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            nullable: true
+                            example: "Stephen McCarthy"
+                          email:
+                            type: string
+                            nullable: true
+                            example: "stephen@lehighvalleywellness.com"
+                          role:
+                            type: string
+                            enum: [user, staff, admin]
+                            example: "admin"
+
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: lvw_session
+      description: Session cookie set after OAuth login
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: User ID
+          example: 1
+        openId:
+          type: string
+          description: OAuth identifier
+          example: "oauth_abc123"
+        name:
+          type: string
+          nullable: true
+          description: User's display name
+          example: "Stephen McCarthy"
+        email:
+          type: string
+          nullable: true
+          description: User's email address
+          example: "stephen@lehighvalleywellness.com"
+        loginMethod:
+          type: string
+          nullable: true
+          description: OAuth provider used
+          example: "google"
+        role:
+          type: string
+          enum: [user, staff, admin]
+          description: User's role for access control
+          example: "admin"
+        createdAt:
+          type: string
+          format: date-time
+          description: Account creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+        lastSignedIn:
+          type: string
+          format: date-time
+          description: Last login timestamp
+
+    Lead:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique lead identifier
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        createdAt:
+          type: string
+          format: date-time
+          description: When the lead was submitted
+          example: "2024-12-22T10:30:00.000Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the lead was last modified
+          example: "2024-12-22T14:45:00.000Z"
+        fullName:
+          type: string
+          description: Lead's full name
+          example: "Jane Smith"
+        email:
+          type: string
+          format: email
+          description: Lead's email address
+          example: "jane.smith@example.com"
+        phone:
+          type: string
+          description: Lead's phone number
+          example: "(484) 555-1234"
+        state:
+          type: string
+          enum: [PA, UT, Other]
+          description: Lead's state of residence
+          example: "PA"
+        interest:
+          type: string
+          enum: [WEIGHT_LOSS, MENOPAUSE_HRT, GENERAL, OTHER]
+          description: Primary service interest
+          example: "WEIGHT_LOSS"
+        preferredContactMethod:
+          type: string
+          enum: [PHONE, EMAIL, TEXT]
+          description: How the lead prefers to be contacted
+          example: "EMAIL"
+        preferredContactTime:
+          type: string
+          nullable: true
+          description: Best time to contact
+          example: "Weekday mornings"
+        status:
+          type: string
+          enum: [NEW, CONTACTED, SCHEDULED, CLOSED]
+          description: Current lead status
+          example: "NEW"
+        internalNotes:
+          type: string
+          nullable: true
+          description: Staff-only internal notes
+          example: "Called on 12/20, scheduled for 12/27"
+        source:
+          type: string
+          description: Lead source
+          example: "website_contact_form"
+        message:
+          type: string
+          nullable: true
+          description: Additional message from the lead
+          example: "I'm interested in learning more about your programs."
+
+    TRPCError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+              description: Error message
+              example: "Lead not found"
+            code:
+              type: string
+              description: tRPC error code
+              example: "NOT_FOUND"
+            data:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: "NOT_FOUND"
+                httpStatus:
+                  type: integer
+                  example: 404
