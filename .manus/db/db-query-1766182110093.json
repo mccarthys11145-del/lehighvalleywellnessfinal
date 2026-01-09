@@ -1,0 +1,15 @@
+{
+  "query": "SELECT id, name, role FROM users;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user coh1ucZHJmKE1ss.2965f5d94dca --database ngExEMNY6rcPz2hN6yBAbY --execute SELECT id, name, role FROM users;",
+  "rows": [
+    {
+      "id": "1",
+      "name": "Stephen Mccarthy",
+      "role": "admin"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\trole\n1\tStephen Mccarthy\tadmin\n",
+  "stderr": "",
+  "execution_time_ms": 65
+}

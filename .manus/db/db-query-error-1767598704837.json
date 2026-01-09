@@ -1,0 +1,8 @@
+{
+  "query": "UPDATE leads SET interest = 'WEIGHT_LOSS_CORE' WHERE interest = 'WEIGHT_LOSS';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user coh1ucZHJmKE1ss.2965f5d94dca --database ngExEMNY6rcPz2hN6yBAbY --execute UPDATE leads SET interest = 'WEIGHT_LOSS_CORE' WHERE interest = 'WEIGHT_LOSS';",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1265 (01000) at line 1: Data truncated for column '%s' at row %d"
+  ]
+}

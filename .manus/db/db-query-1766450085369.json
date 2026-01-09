@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE leads SET phone = 'N/A - Legacy' WHERE phone IS NULL OR phone = '';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user coh1ucZHJmKE1ss.2965f5d94dca --database ngExEMNY6rcPz2hN6yBAbY --execute UPDATE leads SET phone = 'N/A - Legacy' WHERE phone IS NULL OR phone = '';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 59
+}

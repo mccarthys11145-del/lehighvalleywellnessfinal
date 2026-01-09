@@ -1,0 +1,19 @@
+{
+  "query": "SELECT DISTINCT interest FROM leads;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user coh1ucZHJmKE1ss.2965f5d94dca --database ngExEMNY6rcPz2hN6yBAbY --execute SELECT DISTINCT interest FROM leads;",
+  "rows": [
+    {
+      "interest": "MENOPAUSE_HRT"
+    },
+    {
+      "interest": "WEIGHT_LOSS"
+    },
+    {
+      "interest": "GENERAL"
+    }
+  ],
+  "messages": [],
+  "stdout": "interest\nMENOPAUSE_HRT\nWEIGHT_LOSS\nGENERAL\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}
